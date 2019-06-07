@@ -1,0 +1,38 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+int a[100001];
+int b[100001];
+int c[100001];
+int n;
+void add(int x,int y)
+{
+    for(int i=x;i<=n;i+=i&(i)) c[i]+=y;
+}
+
+int query(int x)
+{
+    int ans=0;
+    for(int i=x;i;i-=i&(-i)) ans+=c[i];
+    return ans;
+
+}
+int main()
+{
+    while(~scanf("%d",&n))
+    {
+        memset(c,0,sizeof c);
+        
+        for(int i=1;i<=n;i++) scanf("%d",&a[i]),b[i]=a[i];
+        sort(b+1,b+1+n);
+        ll ans=0;
+        for(int i=1;i<=n;i++)
+        {
+            int p=lower_bound(b+1,b+1+n,a[i])-b;
+            add(p,1);
+            ans+=(ll)(i-query(p));
+        }
+        cout<<ans<<endl;
+    }
+}
